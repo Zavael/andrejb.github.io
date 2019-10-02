@@ -23,4 +23,4 @@ I am a father, lover, optimist, tutor & student, commander & obeyer, supporter &
 
 - currently no active project
 - *mafuti* - Football manager in Java, put on hold
-- *beehive tracker* & *myrmecolog* note taking apps for keepers, put on hold
+- *beehive tracker* & *myrmecolog* - note taking apps for keepers, put on hold
