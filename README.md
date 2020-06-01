@@ -7,14 +7,13 @@ I am a father, lover, optimist, tutor & student, commander & obeyer, supporter &
 
 ### Fields of interest
 
-- family
 - sport
 - culture, history, mythology
 - IT & technology
 
 ### Currently busy with
 
-- caring about my family
+- taking care of my family
 - learning to be an ant-keeper
 - reading books or listening to podcasts
 

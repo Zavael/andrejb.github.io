@@ -1,0 +1,24 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body {
+  background-color: #333;
+  color: #999;
+}
+
+h1 { color: #ccc; }
+
+h2 { color: #bbb; }
+
+h3, h4, h5, h6 { color: #aaa; }
+
+.social {
+	text-align:center;	
+}
+
+.social a {
+	color: #ccc;
+	padding: 0 10px;
+}
