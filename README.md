@@ -2,9 +2,8 @@
 
 I am a father, lover, optimist, tutor & student, commander & obeyer, supporter & opponent.
 
-> Winners are not those who never fail, but those who never quit.  
 > You don't drown by falling in the water; you drown by staying there.  
->     - Edwin Louis Cole
+>  ~ Edwin Louis Cole
 
 ### Fields of interest
 
