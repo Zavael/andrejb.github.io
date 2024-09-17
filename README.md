@@ -1,13 +1,11 @@
 ## About me
 
-I am a father, lover, optimist, tutor & student, commander & obeyer, supporter & opponent.
-
 > You don't drown by falling in the water; you drown by staying there.  
 >  ~ Edwin Louis Cole
 
 ### Fields of interest
 
-- sport
+- sports
 - culture, history, mythology
 - IT & technology
 
