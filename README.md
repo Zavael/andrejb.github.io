@@ -19,4 +19,5 @@
 
 - currently no active project
 - *mafuti* - Football manager in Java, put on hold
+- *Broadshire* - generic text-based rpg game
 - *beehive tracker* & *myrmecolog* - note taking apps for keepers, put on hold
