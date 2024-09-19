@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Pico.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css"
+    />
+    <script>      
+      function updateTravelType(event) {
+        const speed = event.value;
+        document.getElementById("travel-type-effect").textContent = event.options[event.selectedIndex].text + " (rýchlosť: " + speed + " km/deň)";
+        calculateTravelTime();
+      }
+
+      function updateExperienceEffect(val) {
+        document.getElementById("experienceText").textContent =
+          val == "0" ? "Neskúsený" : val == "1" ? "Bežný cestovateľ" : "Profesionál";
+        document.getElementById("experience-effect").textContent =
+          val == "2"
+            ? "Jemne vyššia rýchlosť (1.1 násobok rýchlosti)"
+            : val == "1"
+            ? "Bez zdržania"
+            : "Mierne pomalšia rýchlosť (0.8 násobok rýchlosti)";
+        calculateTravelTime();
+      }
+
+      function updateDistance(val) {
+        if (parseInt(val) < 0) {
+          document.getElementById("path-duration").value = "0";
+          return;
+        }
+        calculateTravelTime();
+      }
+
+      function updateTerrainType(val) {
+        document.getElementById("terrain-type-effect").textContent =
+          val == "1"
+            ? "Ideálny terén (cesty, rovnná krajina, kľudné more s vetrom) bez zdržania."
+            : val == "0.8"
+            ? "Náročnejší terén (les, bažiny, kopce, mierne vlny na mori) môže spomaliť cestovateľa (" + val + " násobok rýchlosti)." //Bad terrain (hills, swamps, dense forest or stormy sea, etc.) can delay traveler a bit (0.7 of speed).
+            : "Ťažký terén (hory, džungľa, veľké vlny, nepriateľské územie) s výrazným spomalením (" + val + " násobok rýchlosti)"; //Mountains, jungle or other difficult terrains can cause significant slowdown (0.5 of speed)
+        calculateTravelTime();
+      }
+
+      function updateWeatherType(val) {
+        document.getElementById("weather-type-effect").textContent =
+          val == "1"
+            ? "Ideálne počasie (pekný deň pri pozemnej preprave, ideálny vietor pri vodnej) bez zdržania." //Ideal weather (clear sky for land travel, ideal wind on sea) causes no delays.
+            : val == "0.8"
+            ? "Nepriaznivé počasie (dážď, hmla, zima, horúčava, bezvetrie na mori) s miernym spomalením (" + val + " násobok rýchlosti)" //Mediocre weather (rain, fog, cold or too hot) can delay traveler a bit (0.9 of speed).
+            : "Zlé počasie (búrka, silný vietor, extrémne teploty) s výrazným spomalením (" + val + " násobok rýchlosti)"; //Bad weather (storm, strong wind) can cause significant slowdown (0.8 of speed)
+        calculateTravelTime();
+      }
+
+      function calculateTravelTime() {
+        const distance = Math.max(document.querySelector('input[name="distance"]').value, 0);
+        const speed = parseFloat(document.querySelector('select[name="travel-type"]').value) || 0;
+        const terrainType = parseFloat(document.querySelector('select[name="terrain-type"]').value) || 1;
+        const weatherType = parseFloat(document.querySelector('select[name="weather-type"]').value) || 1;
+        const experience = parseInt(document.querySelector('input[name="experience"]').value) || 0;
+
+        const finalSpeed = speed * terrainType * weatherType * (experience == 2 ? 1.1 : experience == 0 ? 0.8 : 1);
+        var time = distance / finalSpeed;
+        var speedUnit = "km/deň";
+        var timeUnit = "Dní";
+        if (time < 1) {
+          timeUnit = "Hodín";
+          time *= 8;
+          if (time < 1) {
+            timeUnit = "Minút";
+            time *= 60;
+          }
+        }
+
+        document.getElementById("path-duration").value = time > 0 ? timeUnit + " " + time.toFixed(2) : "0";
+        document.getElementById("path-speed").value = finalSpeed.toFixed(2) + " " + speedUnit;
+      }
+      </script>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="container">
+      <hgroup>
+        <h1>Cestovanie</h1>
+        <p>
+          Jednoduchá kalkulačka pre výpočet času potrebného na prejdenie vzdialenosti. Pomôcka pre TTRPG hry z prostredia stredoveku. Počíta s cestovaním 8 hodín za deň.
+        </p>
+      </hgroup>
+    </header>
+    <!-- ./ Header -->
+
+    <main class="container">
+      <section class="input">
+        <label for="distance"
+          ><h2>Vzdialenosť</h2>
+          <div class="grid">
+            <span class="hint">Vlož vzialenosť v kilometroch</span>
+            <input type="number" name="distance" class="input" required onchange="updateDistance(this.value)" />            
+          </div>
+        </label>
+      </section>
+
+      <article>
+      <section class="input">
+        <label for="travel-type"
+          ><h2>Typ cestovania</h2>
+          <div class="grid">
+            <select
+              name="travel-type"
+              class="input"
+              required
+              onchange="updateTravelType(this)"
+            >
+              <option value="30" selected>Pešo</option>
+              <option value="56">Na koni</option>
+              <option value="12">Volský povoz</option>
+              <option value="40">Koňský povoz</option>
+              <option value="80">Kuriér (s výmenou koní)</option>
+              <option value="45">Intenzívny vojenský pochod</option>
+              <option value="140">Rýchla loď na mori</option> <!-- Galley with rowers at two levels 14km/h -->
+              <option value="70">Pomalá loď na mori</option>
+              <option value="65">Loď po prúde rieky</option>
+              <option value="25">Loď proti prúdu rieky</option>
+            </select>
+            <span id="travel-type-effect">Pešo (rýchlosť: 30 km/deň)</span>
+          </div>
+        </label>
+      </section>
+
+      <section class="input">
+        <label for="terrain-type"
+          ><h2>Podmienky cesty</h2>
+          <div class="grid">
+            <select
+              name="terrain-type"
+              class="input"
+              required
+              onchange="updateTerrainType(this.value)"
+            >
+              <option value="1" selected>Dobré</option>
+              <option value="0.8">Mierne náročné</option>
+              <option value="0.4">Náročné</option>
+            </select>
+            <span id="terrain-type-effect">Ideálny terén (cesty, rovnná krajina, kľudné more s vetrom) bez zdržania.</span>
+          </div>
+        </label>
+      </section>
+
+      <section class="input">
+        <label for="weather-type"
+          ><h2>Počasie</h2>
+          <div class="grid">
+            <select
+              name="weather-type"
+              class="input"
+              required
+              onchange="updateWeatherType(this.value)"
+            >
+              <option selected value="1">Dobré</option>
+              <option value="0.8">Mierne náročné</option>
+              <option value="0.4">Zlé</option>
+            </select>
+            <span id="weather-type-effect">Ideálne počasie (pekný deň pri pozemnej preprave, ideálny vietor pri vodnej) bez zdržania.</span>
+          </div>
+        </label>
+
+      <section class="input">
+        <label for="experience"
+          ><h2>Skúsenosti cestovateľa</h2>
+          <div class="grid">
+            <div>
+              <input
+                style="display: list-item"
+                type="range"
+                min="0"
+                max="2"
+                value="1"
+                step="1"
+                id="experience"
+                name="experience"
+                onchange="updateExperienceEffect(this.value);"
+                aria-describedby="experienceText"
+              />
+          <small id="experienceText">Bežný cestovateľ</small>
+        </div>
+        <span id="experience-effect">Bez zdržania</span>
+        </label>
+      </div>
+      </section>
+    </article>
+
+      <label for="path-duration"
+        ><h2>Výsledok</h2>
+        <div class="grid">
+          <span class="hint">Výsledný čas potrebný na prejdenie vzdialenosti</span>
+          <input id="path-duration" type="text" readonly value="0" />
+        </div>
+        <div class="grid">
+          <span class="hint">Výsledná rýchlosť</span>
+          <input id="path-speed" type="text" readonly value="30.00 km/deň" />
+        </div>
+      </label>
+
+
+      <!-- <button>Pridať cestu</button>
+      <button class="secondary">Zmazať cesty</button> -->
+    </main>
+    <style>
+      .hint {
+        display: block;
+        color: lightblue;
+        font-style: italic;
+      }
+    </style>
+  </body>
+</html>
